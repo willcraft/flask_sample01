@@ -35,7 +35,8 @@ def check_content_type(content_type):
     def _check_content_type(func):
         @wraps(func)
         def decorated(*args, **kwargs):
-            if req.headers['Content-Type'] != content_type:
+            app.logger.debug(req.headers)
+            if not content_type in req.headers['Content-Type']:
                 return jsonify(errors = ['request body of format is invalid']), Status.UNSUPPORTED_MEDIA_TYPE
             return func(*args, **kwargs)
         return decorated
